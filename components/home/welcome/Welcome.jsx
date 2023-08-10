@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -14,6 +14,10 @@ import { icons, SIZES } from "../../../constants";
 
 const Welcome = () => {
   const router = useRouter();
+
+  const [activeJobType, setActiveJobType] = useState("Full-Time")
+
+  const jobType = ["Full-Time", "Part-Time", "Contractor"];
 
   return (
     <View>
@@ -41,7 +45,29 @@ const Welcome = () => {
         </TouchableOpacity>
       </View>
 
-      <View></View>
+      <View style={styles.tabsContainer}>
+        <FlatList
+          data={jobType}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.tab(activeJobType, item)}
+              onPress={() => {
+                setActiveJobType(item);
+                router.push(`/search/${item}`);
+              }}
+            >
+              <Text
+                style={styles.tabText(activeJobType, item)}
+              >
+                {item}
+              </Text>
+            </TouchableOpacity>
+          )}
+          keyExtractor={item => item}
+          contentContainerStyle={{ columnGap: SIZES.small }}
+          horizontal
+        />
+      </View>
     </View>
   );
 };
